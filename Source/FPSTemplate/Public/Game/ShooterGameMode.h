@@ -26,6 +26,7 @@ protected:
 	//virtual void Tick(float DeltaTime) override;
 	
 private:
-	FProcessParameters ProcessParameters;
+	void InitializeGameLift();
 
+	FProcessParameters ProcessParameters;
 };
