@@ -201,7 +201,7 @@ void AShooterGameMode::InitializeGameLift()
     //At the end of a game session, Amazon GameLift Servers uploads everything in the specified 
     //location and stores it in the cloud for access later.
     TArray<FString> Logfiles;
-    Logfiles.Add(TEXT("LogShooterGameMode/Saved/Logs/LogShooterGameMode.log"));
+    Logfiles.Add(TEXT("FPSTemplate/Saved/Logs/FPSTemplate.log"));
     ProcessParameters->logParameters = Logfiles;
 
     //The game server calls ProcessReady() to tell Amazon GameLift Servers it's ready to host game sessions.

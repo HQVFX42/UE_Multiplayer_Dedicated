@@ -28,5 +28,5 @@ protected:
 private:
 	void InitializeGameLift();
 
-	FProcessParameters ProcessParameters;
+	TSharedPtr<FProcessParameters> ProcessParameters;
 };
