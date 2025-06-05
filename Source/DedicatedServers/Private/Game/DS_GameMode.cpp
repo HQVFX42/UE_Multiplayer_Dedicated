@@ -1,37 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Game/ShooterGameMode.h"
+#include "Game/DS_GameMode.h"
 
-DEFINE_LOG_CATEGORY(LogShooterGameMode);
+DEFINE_LOG_CATEGORY(LogDS_GameMode);
 
-AShooterGameMode::AShooterGameMode() :
-    ProcessParameters(nullptr)
+void ADS_GameMode::BeginPlay()
 {
-	/** Hardcoded default pawn class to third person character. */
-    //static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-
-    //if (PlayerPawnBPClass.Class != NULL)
-    //{
-    //    DefaultPawnClass = PlayerPawnBPClass.Class;
-    //}
-
-    UE_LOG(LogShooterGameMode, Log, TEXT("Initializing AGameLiftUnrealAppGameMode..."));
-}
-
-void AShooterGameMode::BeginPlay()
-{
-    Super::BeginPlay();
+	Super::BeginPlay();
 
 #if WITH_GAMELIFT
-    InitializeGameLift();
+	InitializeGameLift();
 #endif
 }
 
-void AShooterGameMode::InitializeGameLift()
+void ADS_GameMode::InitializeGameLift()
 {
 #if WITH_GAMELIFT
-    UE_LOG(LogShooterGameMode, Log, TEXT("Calling InitGameLift..."));
+    UE_LOG(LogDS_GameMode, Log, TEXT("Calling InitGameLift..."));
 
     FGameLiftServerSDKModule* GameLiftSdkModule = &FModuleManager::LoadModuleChecked<FGameLiftServerSDKModule>(FName("GameLiftServerSDK"));
 
@@ -46,7 +32,7 @@ void AShooterGameMode::InitializeGameLift()
 
     if (bIsAnywhereActive)
     {
-        UE_LOG(LogShooterGameMode, Log, TEXT("Configuring server parameters for Anywhere..."));
+        UE_LOG(LogDS_GameMode, Log, TEXT("Configuring server parameters for Anywhere..."));
 
         // If GameLift Anywhere is enabled, parse command line arguments and pass them in the ServerParameters object.
         FString glAnywhereWebSocketUrl = "";
@@ -110,36 +96,36 @@ void AShooterGameMode::InitializeGameLift()
             ServerParametersForAnywhere.m_sessionToken = TCHAR_TO_UTF8(*glAnywhereSessionToken);
         }
 
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_YELLOW);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> WebSocket URL: %s"), *ServerParametersForAnywhere.m_webSocketUrl);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Fleet ID: %s"), *ServerParametersForAnywhere.m_fleetId);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Process ID: %s"), *ServerParametersForAnywhere.m_processId);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Host ID (Compute Name): %s"), *ServerParametersForAnywhere.m_hostId);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Auth Token: %s"), *ServerParametersForAnywhere.m_authToken);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Aws Region: %s"), *ServerParametersForAnywhere.m_awsRegion);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Access Key: %s"), *ServerParametersForAnywhere.m_accessKey);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Secret Key: %s"), *ServerParametersForAnywhere.m_secretKey);
-        UE_LOG(LogShooterGameMode, Log, TEXT(">>>> Session Token: %s"), *ServerParametersForAnywhere.m_sessionToken);
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_NONE);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_YELLOW);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> WebSocket URL: %s"), *ServerParametersForAnywhere.m_webSocketUrl);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Fleet ID: %s"), *ServerParametersForAnywhere.m_fleetId);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Process ID: %s"), *ServerParametersForAnywhere.m_processId);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Host ID (Compute Name): %s"), *ServerParametersForAnywhere.m_hostId);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Auth Token: %s"), *ServerParametersForAnywhere.m_authToken);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Aws Region: %s"), *ServerParametersForAnywhere.m_awsRegion);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Access Key: %s"), *ServerParametersForAnywhere.m_accessKey);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Secret Key: %s"), *ServerParametersForAnywhere.m_secretKey);
+        UE_LOG(LogDS_GameMode, Log, TEXT(">>>> Session Token: %s"), *ServerParametersForAnywhere.m_sessionToken);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_NONE);
     }
 
-    UE_LOG(LogShooterGameMode, Log, TEXT("Initializing the GameLift Server..."));
+    UE_LOG(LogDS_GameMode, Log, TEXT("Initializing the GameLift Server..."));
 
     //InitSDK will establish a local connection with GameLift's agent to enable further communication.
     FGameLiftGenericOutcome InitSdkOutcome = GameLiftSdkModule->InitSDK(ServerParametersForAnywhere);
     if (InitSdkOutcome.IsSuccess())
     {
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_GREEN);
-        UE_LOG(LogShooterGameMode, Log, TEXT("GameLift InitSDK succeeded!"));
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_NONE);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_GREEN);
+        UE_LOG(LogDS_GameMode, Log, TEXT("GameLift InitSDK succeeded!"));
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_NONE);
     }
     else
     {
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_RED);
-        UE_LOG(LogShooterGameMode, Log, TEXT("ERROR: InitSDK failed : ("));
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_RED);
+        UE_LOG(LogDS_GameMode, Log, TEXT("ERROR: InitSDK failed : ("));
         FGameLiftError GameLiftError = InitSdkOutcome.GetError();
-        UE_LOG(LogShooterGameMode, Log, TEXT("ERROR: %s"), *GameLiftError.m_errorMessage);
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_NONE);
+        UE_LOG(LogDS_GameMode, Log, TEXT("ERROR: %s"), *GameLiftError.m_errorMessage);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_NONE);
         return;
     }
 
@@ -151,7 +137,7 @@ void AShooterGameMode::InitializeGameLift()
     ProcessParameters->OnStartGameSession.BindLambda([=](Aws::GameLift::Server::Model::GameSession InGameSession)
         {
             FString GameSessionId = FString(InGameSession.GetGameSessionId());
-            UE_LOG(LogShooterGameMode, Log, TEXT("GameSession Initializing: %s"), *GameSessionId);
+            UE_LOG(LogDS_GameMode, Log, TEXT("GameSession Initializing: %s"), *GameSessionId);
             GameLiftSdkModule->ActivateGameSession();
         });
 
@@ -160,7 +146,7 @@ void AShooterGameMode::InitializeGameLift()
     //In this case, we simply tell Amazon GameLift Servers we are indeed going to shutdown.
     ProcessParameters->OnTerminate.BindLambda([=]()
         {
-            UE_LOG(LogShooterGameMode, Log, TEXT("Game Server Process is terminating"));
+            UE_LOG(LogDS_GameMode, Log, TEXT("Game Server Process is terminating"));
             GameLiftSdkModule->ProcessEnding();
         });
 
@@ -172,7 +158,7 @@ void AShooterGameMode::InitializeGameLift()
     //In this case, we're always healthy!
     ProcessParameters->OnHealthCheck.BindLambda([]()
         {
-            UE_LOG(LogShooterGameMode, Log, TEXT("Performing Health Check"));
+            UE_LOG(LogDS_GameMode, Log, TEXT("Performing Health Check"));
             return true;
         });
 
@@ -205,24 +191,24 @@ void AShooterGameMode::InitializeGameLift()
     ProcessParameters->logParameters = Logfiles;
 
     //The game server calls ProcessReady() to tell Amazon GameLift Servers it's ready to host game sessions.
-    UE_LOG(LogShooterGameMode, Log, TEXT("Calling Process Ready..."));
+    UE_LOG(LogDS_GameMode, Log, TEXT("Calling Process Ready..."));
     FGameLiftGenericOutcome ProcessReadyOutcome = GameLiftSdkModule->ProcessReady(*ProcessParameters);
 
     if (ProcessReadyOutcome.IsSuccess())
     {
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_GREEN);
-        UE_LOG(LogShooterGameMode, Log, TEXT("Process Ready!"));
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_NONE);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_GREEN);
+        UE_LOG(LogDS_GameMode, Log, TEXT("Process Ready!"));
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_NONE);
     }
     else
     {
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_RED);
-        UE_LOG(LogShooterGameMode, Log, TEXT("ERROR: Process Ready Failed!"));
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_RED);
+        UE_LOG(LogDS_GameMode, Log, TEXT("ERROR: Process Ready Failed!"));
         FGameLiftError ProcessReadyError = ProcessReadyOutcome.GetError();
-        UE_LOG(LogShooterGameMode, Log, TEXT("ERROR: %s"), *ProcessReadyError.m_errorMessage);
-        UE_LOG(LogShooterGameMode, SetColor, TEXT("%s"), COLOR_NONE);
+        UE_LOG(LogDS_GameMode, Log, TEXT("ERROR: %s"), *ProcessReadyError.m_errorMessage);
+        UE_LOG(LogDS_GameMode, SetColor, TEXT("%s"), COLOR_NONE);
     }
 
-    UE_LOG(LogShooterGameMode, Log, TEXT("InitGameLift completed!"));
+    UE_LOG(LogDS_GameMode, Log, TEXT("InitGameLift completed!"));
 #endif
 }
