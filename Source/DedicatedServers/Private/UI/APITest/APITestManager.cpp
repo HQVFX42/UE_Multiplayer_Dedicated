@@ -3,6 +3,7 @@
 
 #include "UI/APITest/APITestManager.h"
 #include "HttpModule.h"
+#include "Interfaces/IHttpResponse.h"
 
 #include "Data/API/APIData.h"
 
@@ -28,4 +29,17 @@ void UAPITestManager::ListFleets_Response(FHttpRequestPtr Request, FHttpResponse
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("List Fleets Response Received"));
 
+	TSharedPtr<FJsonObject> JsonObject;
+	TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+	if (FJsonSerializer::Deserialize(JsonReader, JsonObject))
+	{
+		if (JsonObject->HasField(TEXT("FleetIds")))
+		{
+			for (TSharedPtr<FJsonValue> Fleet : JsonObject->GetArrayField(TEXT("FleetIds")))
+			{
+				FString FleetString = Fleet->AsString();
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FleetString);
+			}
+		}
+	}
 }
