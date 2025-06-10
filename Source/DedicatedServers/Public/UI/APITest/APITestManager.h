@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interfaces/IHttpRequest.h"
+
 #include "UI/HTTP/HTTPRequestManager.h"
+
 #include "APITestManager.generated.h"
 
 /**
@@ -19,4 +22,5 @@ public:
 	UFUNCTION()
 	void ListFleetsButtonClicked();
 	
+	void ListFleets_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 };
