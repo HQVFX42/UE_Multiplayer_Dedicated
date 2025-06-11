@@ -43,5 +43,15 @@ void UAPITestManager::ListFleets_Response(FHttpRequestPtr Request, FHttpResponse
 
 			DSMetaData.Dump();
 		}
+
+		FDSListFleetsResponse ListFleetsResponse;
+		if (FJsonObjectConverter::JsonObjectToUStruct(JsonObject.ToSharedRef(), &ListFleetsResponse))
+		{
+			ListFleetsResponse.Dump();
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to convert JSON to ListFleetsResponse"));
+		}
 	}
 }
