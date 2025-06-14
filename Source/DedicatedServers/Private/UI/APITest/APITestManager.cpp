@@ -8,6 +8,7 @@
 
 #include "UI/HTTP/HTTPRequestTypes.h"
 #include "Data/API/APIData.h"
+#include "DedicatedServers/DedicatedServers.h"
 
 void UAPITestManager::ListFleetsButtonClicked()
 {
@@ -35,6 +36,32 @@ void UAPITestManager::ListFleets_Response(FHttpRequestPtr Request, FHttpResponse
 	TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
 	if (FJsonSerializer::Deserialize(JsonReader, JsonObject))
 	{
+		if (JsonObject->HasField(TEXT("error")))
+		{
+			const TSharedPtr<FJsonObject>* ErrorObjectPtr;
+			if (JsonObject->TryGetObjectField(TEXT("error"), ErrorObjectPtr))
+			{
+				const TSharedPtr<FJsonObject>& ErrorObject = *ErrorObjectPtr;
+				FString ErrorType = ErrorObject->HasField(TEXT("name")) ? ErrorObject->GetStringField(TEXT("name")) : TEXT("Unknown Error");
+				//FString ErrorMessage = ErrorObject->HasField(TEXT("$fault")) ? ErrorObject->GetStringField(TEXT("$fault")) : TEXT("Unknown Error Message");
+				UE_LOG(LogDS, Error, TEXT("Error Type: %s"), *ErrorType);
+				//UE_LOG(LogDS, Error, TEXT("Error Message: %s"), *ErrorMessage);
+
+				return;
+			}
+		}
+		if (JsonObject->HasField(TEXT("errorType")) or JsonObject->HasField(TEXT("errorMessage")))
+		{
+			FString ErrorType = JsonObject->HasField(TEXT("errorType")) ? JsonObject->GetStringField(TEXT("errorType")) : TEXT("Unknown Error");
+			FString ErrorMessage = JsonObject->HasField(TEXT("errorMessage")) ? JsonObject->GetStringField(TEXT("errorMessage")) : TEXT("Unknown Error Message");
+
+			UE_LOG(LogDS, Error, TEXT("Error Type: %s"), *ErrorType);
+			UE_LOG(LogDS, Error, TEXT("Error Message: %s"), *ErrorMessage);
+
+			return;
+		}
+		
+
 		if (JsonObject->HasField(TEXT("$metadata")))
 		{
 			TSharedPtr<FJsonObject> MetaDataJsonObject = JsonObject->GetObjectField(TEXT("$metadata"));
