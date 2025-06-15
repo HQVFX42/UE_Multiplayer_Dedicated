@@ -7,6 +7,7 @@
 #include "HTTPRequestManager.generated.h"
 
 class UAPIData;
+class FJsonObject;
 
 /**
  * 
@@ -20,4 +21,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAPIData> APIData;
 	
+	bool ContainsErrors(TSharedPtr<FJsonObject> JsonObject);
+	void DumpMetaData(TSharedPtr<FJsonObject> JsonObject);
 };
