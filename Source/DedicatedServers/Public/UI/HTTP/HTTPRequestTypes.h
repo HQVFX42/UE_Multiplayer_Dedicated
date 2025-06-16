@@ -47,7 +47,7 @@ struct FDSGameSession
 	GENERATED_BODY()
 
 	UPROPERTY()
-	double CreationTime{};
+	FString CreationTime{};
 
 	UPROPERTY()
 	FString CreatorId{};
@@ -101,7 +101,7 @@ struct FDSGameSession
 	FString StatusReason{};
 
 	UPROPERTY()
-	double TerminationTime{};
+	FString TerminationTime{};
 
 	void Dump() const;
 };
@@ -113,7 +113,7 @@ struct FDSPlayerSession
 
 
 	UPROPERTY()
-	double CreationTime{};
+	FString CreationTime{};
 
 	UPROPERTY()
 	FString DnsName{};
@@ -146,7 +146,7 @@ struct FDSPlayerSession
 	FString Status{};
 
 	UPROPERTY()
-	double TerminationTime{};
+	FString TerminationTime{};
 
 	// Method to log the property values
 	void Dump() const;
