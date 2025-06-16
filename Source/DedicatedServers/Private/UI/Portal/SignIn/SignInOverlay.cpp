@@ -2,17 +2,20 @@
 
 
 #include "UI/Portal/SignIn/SignInOverlay.h"
+#include "Components/Button.h"
+
 #include "UI/Portal/PortalManager.h"
 #include "UI/API/GameSessions/JoinGame.h"
-
-#include "Components/Button.h"
 
 void USignInOverlay::NativeConstruct()
 {
 	Super::NativeConstruct();
 
 	check(PortalManagerClass);
-	PortalManager = NewObject<UPortalManager>(PortalManagerClass);
+	check(IsValid(JoinGameWidget));
+	check(IsValid(JoinGameWidget->Button_JoinGame));
+
+	PortalManager = NewObject<UPortalManager>(this, PortalManagerClass);
 
 	JoinGameWidget->Button_JoinGame->OnClicked.AddDynamic(this, &ThisClass::OnJoinGameButtonClicked);
 }
@@ -20,6 +23,8 @@ void USignInOverlay::NativeConstruct()
 void USignInOverlay::OnJoinGameButtonClicked()
 {
 	check(IsValid(PortalManager));
+	check(IsValid(JoinGameWidget));
+	check(IsValid(JoinGameWidget->Button_JoinGame));
 
 	PortalManager->BroadcastJoinGameSessionMessage.AddDynamic(this, &ThisClass::UpdateJoinGameSatusMessage);
 	PortalManager->JoinGameSession();
@@ -29,5 +34,6 @@ void USignInOverlay::OnJoinGameButtonClicked()
 
 void USignInOverlay::UpdateJoinGameSatusMessage(const FString& StatusMessage)
 {
+	check(IsValid(JoinGameWidget));
 	JoinGameWidget->SetStatusMessage(StatusMessage);
 }

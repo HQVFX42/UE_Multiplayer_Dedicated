@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interfaces/IHttpRequest.h"
+
 #include "UI/HTTP/HTTPRequestManager.h"
+
 #include "PortalManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBroadcastJoinGameSessionMessage, const FString&, StatusMessage);
@@ -22,4 +25,6 @@ public:
 
 	void JoinGameSession();
 	
+private:
+	void FindOrCreateGameSession_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 };
