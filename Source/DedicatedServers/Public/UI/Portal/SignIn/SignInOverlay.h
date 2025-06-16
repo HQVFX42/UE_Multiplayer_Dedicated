@@ -36,5 +36,5 @@ private:
 	void OnJoinGameButtonClicked();
 
 	UFUNCTION()
-	void UpdateJoinGameSatusMessage(const FString& StatusMessage);
+	void UpdateJoinGameSatusMessage(const FString& StatusMessage, bool bResetJoinGameButton);
 };
