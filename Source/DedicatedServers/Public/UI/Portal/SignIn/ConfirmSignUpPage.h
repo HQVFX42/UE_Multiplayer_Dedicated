@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "ConfrimSignUpPage.generated.h"
+#include "ConfirmSignUpPage.generated.h"
 
 class UEditableTextBox;
 class UButton;
@@ -14,7 +14,7 @@ class UTextBlock;
  * 
  */
 UCLASS()
-class DEDICATEDSERVERS_API UConfrimSignUpPage : public UUserWidget
+class DEDICATEDSERVERS_API UConfirmSignUpPage : public UUserWidget
 {
 	GENERATED_BODY()
 	

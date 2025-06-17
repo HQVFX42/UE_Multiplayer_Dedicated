@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "SuccessConfirmPage.generated.h"
+#include "SuccessConfirmedPage.generated.h"
 
 class UButton;
 
@@ -12,7 +12,7 @@ class UButton;
  * 
  */
 UCLASS()
-class DEDICATEDSERVERS_API USuccessConfirmPage : public UUserWidget
+class DEDICATEDSERVERS_API USuccessConfirmedPage : public UUserWidget
 {
 	GENERATED_BODY()
 	
