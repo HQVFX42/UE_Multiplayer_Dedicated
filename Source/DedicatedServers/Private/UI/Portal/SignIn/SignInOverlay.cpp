@@ -4,6 +4,7 @@
 #include "UI/Portal/SignIn/SignInOverlay.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
+#include "Components/EditableTextBox.h"
 
 #include "UI/Portal/PortalManager.h"
 #include "UI/Portal/SignIn/SignInPage.h"
@@ -17,31 +18,43 @@ void USignInOverlay::NativeConstruct()
 	Super::NativeConstruct();
 
 	check(PortalManagerClass);
-	check(IsValid(JoinGameWidget));
-	check(IsValid(JoinGameWidget->Button_JoinGame));
+	//check(IsValid(JoinGameWidget));
+	//check(IsValid(JoinGameWidget->Button_JoinGame));
 
 	PortalManager = NewObject<UPortalManager>(this, PortalManagerClass);
 
 	JoinGameWidget->Button_JoinGame->OnClicked.AddDynamic(this, &ThisClass::OnJoinGameButtonClicked);
-
-	check(Button_SignIn_Test);
-	check(Button_SignUp_Test);
-	check(Button_ConfirmSignUp_Test);
-	check(Button_SuccessConfirmed_Test);
 
 	Button_SignIn_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
 	Button_SignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
 	Button_ConfirmSignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowConfirmSignUpPage);
 	Button_SuccessConfirmed_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSuccessConfirmedPage);
 
+	//check(IsValid(SignInPage));
+	//check(IsValid(SignInPage->Button_SignIn));
+	SignInPage->Button_SignIn->OnClicked.AddDynamic(this, &ThisClass::SignInButtonClicked);
+	SignInPage->Button_SignUp->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
+	SignInPage->Button_Quit->OnClicked.AddDynamic(PortalManager, &UPortalManager::QuitGame);
+
+	//check(IsValid(SignUpPage));
+	//check(IsValid(SignUpPage->Button_Back));
+	//check(IsValid(SignUpPage->Button_SignUp));
+	SignUpPage->Button_Back->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
+	SignUpPage->Button_SignUp->OnClicked.AddDynamic(this, &ThisClass::SignUpButtonClicked);
+
+	//check(IsValid(ConfirmSignUpPage));
+	//check(IsValid(ConfirmSignUpPage->Button_Confirm));
+	//check(IsValid(ConfirmSignUpPage->Button_Back));
+	ConfirmSignUpPage->Button_Confirm->OnClicked.AddDynamic(this, &ThisClass::ConfirmButtonClicked);
+	ConfirmSignUpPage->Button_Back->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
+
+	//check(IsValid(SuccessConfirmedPage));
+	//check(IsValid(SuccessConfirmedPage->Button_Ok));
+	SuccessConfirmedPage->Button_Ok->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
 }
 
 void USignInOverlay::OnJoinGameButtonClicked()
 {
-	check(IsValid(PortalManager));
-	check(IsValid(JoinGameWidget));
-	check(IsValid(JoinGameWidget->Button_JoinGame));
-
 	PortalManager->BroadcastJoinGameSessionMessage.AddDynamic(this, &ThisClass::UpdateJoinGameSatusMessage);
 	PortalManager->JoinGameSession();
 
@@ -50,9 +63,6 @@ void USignInOverlay::OnJoinGameButtonClicked()
 
 void USignInOverlay::UpdateJoinGameSatusMessage(const FString& StatusMessage, bool bResetJoinGameButton)
 {
-	check(IsValid(JoinGameWidget));
-	check(IsValid(JoinGameWidget->Button_JoinGame));
-
 	JoinGameWidget->SetStatusMessage(StatusMessage);
 
 	if (bResetJoinGameButton)
@@ -63,24 +73,41 @@ void USignInOverlay::UpdateJoinGameSatusMessage(const FString& StatusMessage, bo
 
 void USignInOverlay::ShowSignInPage()
 {
-	check(IsValid(WidgetSwitcher) and IsValid(SignInPage));
 	WidgetSwitcher->SetActiveWidget(SignInPage);
 }
 
 void USignInOverlay::ShowSignUpPage()
 {
-	check(IsValid(WidgetSwitcher) and IsValid(SignUpPage));
 	WidgetSwitcher->SetActiveWidget(SignUpPage);
 }
 
 void USignInOverlay::ShowConfirmSignUpPage()
 {
-	check(IsValid(WidgetSwitcher) and IsValid(ConfirmSignUpPage));
 	WidgetSwitcher->SetActiveWidget(ConfirmSignUpPage);
 }
 
 void USignInOverlay::ShowSuccessConfirmedPage()
 {
-	check(IsValid(WidgetSwitcher) and IsValid(SuccessConfirmedPage));
 	WidgetSwitcher->SetActiveWidget(SuccessConfirmedPage);
+}
+
+void USignInOverlay::SignInButtonClicked()
+{
+	const FString Username = SignInPage->TextBox_Username->GetText().ToString();
+	const FString Password = SignInPage->TextBox_Password->GetText().ToString();
+	PortalManager->SignIn(Username, Password);
+}
+
+void USignInOverlay::SignUpButtonClicked()
+{
+	const FString Username = SignUpPage->TextBox_Username->GetText().ToString();
+	const FString Password = SignUpPage->TextBox_Password->GetText().ToString();
+	const FString Email = SignUpPage->TextBox_Email->GetText().ToString();
+	PortalManager->SignUp(Username, Password, Email);
+}
+
+void USignInOverlay::ConfirmButtonClicked()
+{
+	const FString ConfirmationCode = ConfirmSignUpPage->TextBox_ConfirmationCode->GetText().ToString();
+	PortalManager->Confirm(ConfirmationCode);
 }

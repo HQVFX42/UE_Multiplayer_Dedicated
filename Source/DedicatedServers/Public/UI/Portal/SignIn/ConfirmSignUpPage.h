@@ -20,19 +20,10 @@ class DEDICATEDSERVERS_API UConfirmSignUpPage : public UUserWidget
 	
 public:
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UEditableTextBox> TextBox_Username;
+	TObjectPtr<UEditableTextBox> TextBox_ConfirmationCode;
 
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UEditableTextBox> TextBox_Password;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UEditableTextBox> TextBox_ConfirmPassword;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UEditableTextBox> TextBox_Email;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_SignUp;
+	TObjectPtr<UButton> Button_Confirm;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Back;
@@ -40,5 +31,6 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock_StatusMessage;
 	
-	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> TextBlock_Destination;
 };
