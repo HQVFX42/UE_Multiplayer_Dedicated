@@ -17,6 +17,16 @@ UCLASS()
 class DEDICATEDSERVERS_API USignUpPage : public UUserWidget
 {
 	GENERATED_BODY()
+
+private:
+	UFUNCTION()
+	void UpdateSignUpButtonState(const FText& Text);
+
+	bool IsValidEmail(const FString& Email);
+	bool IsStrongPassword(const FString& Password, FString& StatusMessage);
+
+protected:
+	virtual void NativeConstruct() override;
 	
 public:
 	UPROPERTY(meta = (BindWidget))
