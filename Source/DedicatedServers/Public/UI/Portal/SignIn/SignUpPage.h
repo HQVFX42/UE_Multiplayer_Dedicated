@@ -29,6 +29,9 @@ protected:
 	virtual void NativeConstruct() override;
 	
 public:
+	UFUNCTION()
+	void UpdateStatusMessage(const FString& Message, bool bShouldResetWidgets);
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> TextBox_Username;
 

@@ -78,3 +78,55 @@ void FDSPlayerSession::Dump() const
 	UE_LOG(LogDS, Log, TEXT("  Status: %s"), *Status);
 	UE_LOG(LogDS, Log, TEXT("  TerminationTime: %s"), *TerminationTime);
 }
+
+void FCodeDeliveryDetails::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("CodeDeliveryDetails:"));
+	UE_LOG(LogDS, Log, TEXT("   AttributeName: %s"), *AttributeName);
+	UE_LOG(LogDS, Log, TEXT("   DeliveryMedium: %s"), *DeliveryMedium);
+	UE_LOG(LogDS, Log, TEXT("   Destination: %s"), *Destination);
+}
+
+void FDSSignUpResponse::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("FDSSignUpResponse Details:"));
+	CodeDeliveryDetails.Dump();
+	UE_LOG(LogDS, Log, TEXT("UserConfirmed: %s"), UserConfirmed ? TEXT("true") : TEXT("false"));
+	UE_LOG(LogDS, Log, TEXT("UserSub: %s"), *UserSub);
+}
+
+void FDSNewDeviceMetaData::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("NewDeviceMetadata:"));
+	UE_LOG(LogDS, Log, TEXT("   DeviceGroupKey: %s"), *DeviceGroupKey);
+	UE_LOG(LogDS, Log, TEXT("   DeviceKey: %s"), *DeviceKey);
+}
+
+void FDSAuthenticationResult::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("AuthenticationResult:"));
+	UE_LOG(LogDS, Log, TEXT("   AccessToken: %s"), *AccessToken);
+	UE_LOG(LogDS, Log, TEXT("   ExpiresIn: %d"), ExpiresIn);
+	UE_LOG(LogDS, Log, TEXT("   IdToken: %s"), *IdToken);
+	NewDeviceMetadata.Dump();
+	UE_LOG(LogDS, Log, TEXT("   RefreshToken: %s"), *RefreshToken);
+	UE_LOG(LogDS, Log, TEXT("   TokenType: %s"), *TokenType);
+}
+
+void FDSChallengeParameters::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("ChallengeParameters:"));
+	for (const auto& Param : Parameters)
+	{
+		UE_LOG(LogDS, Log, TEXT("   %s: %s"), *Param.Key, *Param.Value);
+	}
+}
+
+void FDSInitiateAuthResponse::Dump() const
+{
+	UE_LOG(LogDS, Log, TEXT("FDSSignUpResponse Details:"));
+	AuthenticationResult.Dump();
+	UE_LOG(LogDS, Log, TEXT("ChallengeName: %s"), *ChallengeName);
+	ChallengeParameters.Dump();
+	UE_LOG(LogDS, Log, TEXT("Session: %s"), *Session);
+}

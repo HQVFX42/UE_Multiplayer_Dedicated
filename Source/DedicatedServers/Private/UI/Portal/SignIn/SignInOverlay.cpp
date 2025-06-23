@@ -39,6 +39,7 @@ void USignInOverlay::NativeConstruct()
 	//check(IsValid(SignUpPage->Button_SignUp));
 	SignUpPage->Button_Back->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
 	SignUpPage->Button_SignUp->OnClicked.AddDynamic(this, &ThisClass::SignUpButtonClicked);
+	PortalManager->SignUpStatusMessageDelegate.AddDynamic(SignUpPage, &USignUpPage::UpdateStatusMessage);
 
 	//check(IsValid(ConfirmSignUpPage));
 	//check(IsValid(ConfirmSignUpPage->Button_Confirm));

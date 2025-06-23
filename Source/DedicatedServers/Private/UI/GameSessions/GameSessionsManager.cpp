@@ -122,6 +122,7 @@ void UGameSessionsManager::TryCreatePlayerSession(const FString& PlayerId, const
 	FString Content = SerializeJsonObject(Params);
 
 	Request->SetContentAsString(Content);
+
 	Request->ProcessRequest();
 }
 

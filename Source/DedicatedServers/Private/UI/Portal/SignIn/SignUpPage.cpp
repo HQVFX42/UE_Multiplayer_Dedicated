@@ -54,6 +54,15 @@ void USignUpPage::UpdateSignUpButtonState(const FText& Text)
 	Button_SignUp->SetIsEnabled(bIsUsernameValid && bArePasswordsEqual && bIsEmailValid && bIsStrongPassword);
 }
 
+void USignUpPage::UpdateStatusMessage(const FString& Message, bool bShouldResetWidgets)
+{
+	TextBlock_StatusMessage->SetText(FText::FromString(Message));
+	if (bShouldResetWidgets)
+	{
+		Button_SignUp->SetIsEnabled(true);
+	}
+}
+
 bool USignUpPage::IsValidEmail(const FString& Email)
 {
 	//"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"

@@ -25,4 +25,10 @@ public:
 
 	UFUNCTION()
 	void QuitGame();
+
+	UPROPERTY()
+	FAPIStatusMessage SignUpStatusMessageDelegate;
+
+private:
+	void SignUp_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 };
