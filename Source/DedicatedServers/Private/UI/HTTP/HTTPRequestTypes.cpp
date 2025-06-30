@@ -91,8 +91,8 @@ void FDSSignUpResponse::Dump() const
 {
 	UE_LOG(LogDS, Log, TEXT("FDSSignUpResponse Details:"));
 	CodeDeliveryDetails.Dump();
-	UE_LOG(LogDS, Log, TEXT("UserConfirmed: %s"), UserConfirmed ? TEXT("true") : TEXT("false"));
-	UE_LOG(LogDS, Log, TEXT("UserSub: %s"), *UserSub);
+	UE_LOG(LogDS, Log, TEXT("   UserConfirmed: %s"), UserConfirmed ? TEXT("true") : TEXT("false"));
+	UE_LOG(LogDS, Log, TEXT("   UserSub: %s"), *UserSub);
 }
 
 void FDSNewDeviceMetaData::Dump() const
@@ -115,7 +115,7 @@ void FDSAuthenticationResult::Dump() const
 
 void FDSChallengeParameters::Dump() const
 {
-	UE_LOG(LogDS, Log, TEXT("ChallengeParameters:"));
+	UE_LOG(LogDS, Log, TEXT("   ChallengeParameters:"));
 	for (const auto& Param : Parameters)
 	{
 		UE_LOG(LogDS, Log, TEXT("   %s: %s"), *Param.Key, *Param.Value);
@@ -124,9 +124,9 @@ void FDSChallengeParameters::Dump() const
 
 void FDSInitiateAuthResponse::Dump() const
 {
-	UE_LOG(LogDS, Log, TEXT("FDSSignUpResponse Details:"));
+	UE_LOG(LogDS, Log, TEXT("FDSSignInResponse Details:"));
 	AuthenticationResult.Dump();
-	UE_LOG(LogDS, Log, TEXT("ChallengeName: %s"), *ChallengeName);
+	UE_LOG(LogDS, Log, TEXT("   ChallengeName: %s"), *ChallengeName);
 	ChallengeParameters.Dump();
-	UE_LOG(LogDS, Log, TEXT("Session: %s"), *Session);
+	UE_LOG(LogDS, Log, TEXT("   Session: %s"), *Session);
 }

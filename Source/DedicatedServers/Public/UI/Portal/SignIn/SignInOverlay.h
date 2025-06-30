@@ -77,15 +77,17 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<USuccessConfirmedPage> SuccessConfirmedPage;
 
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_SignIn_Test;
+	/** Test buttons */
 
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_SignUp_Test;
+	//UPROPERTY(meta = (BindWidget))
+	//TObjectPtr<UButton> Button_SignIn_Test;
 
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_ConfirmSignUp_Test;
+	//UPROPERTY(meta = (BindWidget))
+	//TObjectPtr<UButton> Button_SignUp_Test;
 
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UButton> Button_SuccessConfirmed_Test;
+	//UPROPERTY(meta = (BindWidget))
+	//TObjectPtr<UButton> Button_ConfirmSignUp_Test;
+
+	//UPROPERTY(meta = (BindWidget))
+	//TObjectPtr<UButton> Button_SuccessConfirmed_Test;
 };

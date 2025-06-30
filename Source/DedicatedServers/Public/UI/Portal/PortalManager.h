@@ -28,6 +28,9 @@ public:
 	void QuitGame();
 
 	UPROPERTY(BlueprintAssignable)
+	FAPIStatusMessage SignInStatusMessageDelegate;
+
+	UPROPERTY(BlueprintAssignable)
 	FAPIStatusMessage SignUpStatusMessageDelegate;
 
 	UPROPERTY(BlueprintAssignable)
@@ -43,6 +46,7 @@ public:
 	FString LastUsername;
 
 private:
+	void SignIn_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 	void SignUp_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 	void Confirm_Response(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 };

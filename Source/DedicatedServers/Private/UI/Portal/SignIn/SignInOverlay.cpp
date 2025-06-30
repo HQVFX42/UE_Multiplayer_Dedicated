@@ -19,22 +19,24 @@ void USignInOverlay::NativeConstruct()
 	Super::NativeConstruct();
 
 	check(PortalManagerClass);
-	//check(IsValid(JoinGameWidget));
-	//check(IsValid(JoinGameWidget->Button_JoinGame));
 
 	PortalManager = NewObject<UPortalManager>(this, PortalManagerClass);
 
-	Button_SignIn_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
-	Button_SignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
-	Button_ConfirmSignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowConfirmSignUpPage);
-	Button_SuccessConfirmed_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSuccessConfirmedPage);
+	/** Test buttons */
+	//Button_SignIn_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
+	//Button_SignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
+	//Button_ConfirmSignUp_Test->OnClicked.AddDynamic(this, &ThisClass::ShowConfirmSignUpPage);
+	//Button_SuccessConfirmed_Test->OnClicked.AddDynamic(this, &ThisClass::ShowSuccessConfirmedPage);
 
+	/** sign in */
 	//check(IsValid(SignInPage));
 	//check(IsValid(SignInPage->Button_SignIn));
 	SignInPage->Button_SignIn->OnClicked.AddDynamic(this, &ThisClass::SignInButtonClicked);
 	SignInPage->Button_SignUp->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
 	SignInPage->Button_Quit->OnClicked.AddDynamic(PortalManager, &UPortalManager::QuitGame);
+	PortalManager->SignInStatusMessageDelegate.AddDynamic(SignInPage, &USignInPage::UpdateStatusMessage);
 
+	/** sign up */
 	//check(IsValid(SignUpPage));
 	//check(IsValid(SignUpPage->Button_Back));
 	//check(IsValid(SignUpPage->Button_SignUp));
@@ -43,6 +45,7 @@ void USignInOverlay::NativeConstruct()
 	PortalManager->SignUpStatusMessageDelegate.AddDynamic(SignUpPage, &USignUpPage::UpdateStatusMessage);
 	PortalManager->OnSignUpSucceeded.AddDynamic(this, &ThisClass::OnSignUpSucceeded);
 
+	/** confirm sign up */
 	//check(IsValid(ConfirmSignUpPage));
 	//check(IsValid(ConfirmSignUpPage->Button_Confirm));
 	//check(IsValid(ConfirmSignUpPage->Button_Back));
@@ -51,6 +54,7 @@ void USignInOverlay::NativeConstruct()
 	PortalManager->ConfirmStatusMessageDelegate.AddDynamic(ConfirmSignUpPage, &UConfirmSignUpPage::UpdateStatusMessage);
 	PortalManager->OnConfirmSucceeded.AddDynamic(this, &ThisClass::OnConfirmSucceeded);
 
+	/** success confirmed */
 	//check(IsValid(SuccessConfirmedPage));
 	//check(IsValid(SuccessConfirmedPage->Button_Ok));
 	SuccessConfirmedPage->Button_Ok->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);

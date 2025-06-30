@@ -20,6 +20,9 @@ class DEDICATEDSERVERS_API USignInPage : public UUserWidget
 	
 	
 public:
+	UFUNCTION()
+	void UpdateStatusMessage(const FString& Message, bool bShouldResetWidgets);
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> TextBox_Username;
 	
