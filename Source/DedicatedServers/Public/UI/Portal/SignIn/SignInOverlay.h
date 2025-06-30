@@ -56,6 +56,12 @@ private:
 	UFUNCTION()
 	void ConfirmButtonClicked();
 
+	UFUNCTION()
+	void OnSignUpSucceeded();
+
+	UFUNCTION()
+	void OnConfirmSucceeded();
+
 	UPROPERTY()
 	TObjectPtr<UPortalManager> PortalManager;
 

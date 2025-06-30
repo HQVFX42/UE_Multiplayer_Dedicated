@@ -19,6 +19,11 @@ class DEDICATEDSERVERS_API UConfirmSignUpPage : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	void ClearTextBoxes();
+
+	UFUNCTION()
+	void UpdateStatusMessage(const FString& Message, bool bShouldResetWidgets);
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> TextBox_ConfirmationCode;
 

@@ -5,6 +5,7 @@
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
+#include "Components/TextBlock.h"
 
 #include "UI/Portal/PortalManager.h"
 #include "UI/Portal/SignIn/SignInPage.h"
@@ -40,12 +41,15 @@ void USignInOverlay::NativeConstruct()
 	SignUpPage->Button_Back->OnClicked.AddDynamic(this, &ThisClass::ShowSignInPage);
 	SignUpPage->Button_SignUp->OnClicked.AddDynamic(this, &ThisClass::SignUpButtonClicked);
 	PortalManager->SignUpStatusMessageDelegate.AddDynamic(SignUpPage, &USignUpPage::UpdateStatusMessage);
+	PortalManager->OnSignUpSucceeded.AddDynamic(this, &ThisClass::OnSignUpSucceeded);
 
 	//check(IsValid(ConfirmSignUpPage));
 	//check(IsValid(ConfirmSignUpPage->Button_Confirm));
 	//check(IsValid(ConfirmSignUpPage->Button_Back));
 	ConfirmSignUpPage->Button_Confirm->OnClicked.AddDynamic(this, &ThisClass::ConfirmButtonClicked);
 	ConfirmSignUpPage->Button_Back->OnClicked.AddDynamic(this, &ThisClass::ShowSignUpPage);
+	PortalManager->ConfirmStatusMessageDelegate.AddDynamic(ConfirmSignUpPage, &UConfirmSignUpPage::UpdateStatusMessage);
+	PortalManager->OnConfirmSucceeded.AddDynamic(this, &ThisClass::OnConfirmSucceeded);
 
 	//check(IsValid(SuccessConfirmedPage));
 	//check(IsValid(SuccessConfirmedPage->Button_Ok));
@@ -90,5 +94,21 @@ void USignInOverlay::SignUpButtonClicked()
 void USignInOverlay::ConfirmButtonClicked()
 {
 	const FString ConfirmationCode = ConfirmSignUpPage->TextBox_ConfirmationCode->GetText().ToString();
+	ConfirmSignUpPage->Button_Confirm->SetIsEnabled(false); // Disable button to prevent multiple clicks
 	PortalManager->Confirm(ConfirmationCode);
+}
+
+void USignInOverlay::OnSignUpSucceeded()
+{
+	SignUpPage->ClearTextBoxes();
+	ConfirmSignUpPage->TextBlock_Destination->SetText(FText::FromString(PortalManager->LastSignUpResponse.CodeDeliveryDetails.Destination));
+	ShowConfirmSignUpPage();
+}
+
+void USignInOverlay::OnConfirmSucceeded()
+{
+	ConfirmSignUpPage->ClearTextBoxes();
+	ShowSuccessConfirmedPage();
+	// Optionally, you can also automatically sign in after confirmation
+	// SignInButtonClicked();
 }

@@ -63,6 +63,14 @@ void USignUpPage::UpdateStatusMessage(const FString& Message, bool bShouldResetW
 	}
 }
 
+void USignUpPage::ClearTextBoxes()
+{
+	TextBox_Username->SetText(FText::GetEmpty());
+	TextBox_Password->SetText(FText::GetEmpty());
+	TextBox_ConfirmPassword->SetText(FText::GetEmpty());
+	TextBox_Email->SetText(FText::GetEmpty());
+}
+
 bool USignUpPage::IsValidEmail(const FString& Email)
 {
 	//"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"

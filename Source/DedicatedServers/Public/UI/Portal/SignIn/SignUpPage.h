@@ -32,6 +32,8 @@ public:
 	UFUNCTION()
 	void UpdateStatusMessage(const FString& Message, bool bShouldResetWidgets);
 
+	void ClearTextBoxes();
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UEditableTextBox> TextBox_Username;
 
