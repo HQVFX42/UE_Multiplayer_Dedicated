@@ -1,4 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -21,6 +22,8 @@ class DEDICATEDSERVERS_API UDSLocalPlayerSubsystem : public ULocalPlayerSubsyste
 	
 public:
 	void InitializeTokens(const FDSAuthenticationResult& AuthResult, UPortalManager* Manager);
+	void SetRefreshTokenTimer();
+	void UpdateTokens(const FString& AccessToken, const FString& IdToken);
 
 private:
 	UPROPERTY()
@@ -28,4 +31,8 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UPortalManager> PortalManager;
+
+	// 75% of an hour, the token will be refreshed before it expires.
+	float TokenRefreshInterval = 2700.f;
+	FTimerHandle RefreshTimer;
 };
