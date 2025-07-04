@@ -10,6 +10,7 @@
 
 #include "Data/API/APIData.h"
 #include "Player/DSLocalPlayerSubsystem.h"
+#include "UI/Portal/PortalHUD.h"
 
 
 void UPortalManager::SignIn(const FString& Username, const FString& Password)
@@ -53,6 +54,15 @@ void UPortalManager::SignIn_Response(FHttpRequestPtr Request, FHttpResponsePtr R
 			SignInStatusMessageDelegate.Broadcast(HTTPStatusMessages::SomethingWentWrong, true);
 			return;
 		}
+		if (JsonObject->HasField(TEXT("name")))
+		{
+			FString Exception = JsonObject->GetStringField(TEXT("name"));
+			if (Exception.Equals(TEXT("NotAuthorizedException")))
+			{
+				SignInStatusMessageDelegate.Broadcast(TEXT("Account does not exist, or entered the wrong ID or password."), true);
+				return;
+			}
+		}
 
 		FDSInitiateAuthResponse InitiateAuthResponse;
 		FJsonObjectConverter::JsonObjectToUStruct(JsonObject.ToSharedRef(), &InitiateAuthResponse);
@@ -63,9 +73,18 @@ void UPortalManager::SignIn_Response(FHttpRequestPtr Request, FHttpResponsePtr R
 		{
 			LocalPlayerSubsystem->InitializeTokens(InitiateAuthResponse.AuthenticationResult, this);
 		}
-		else
+		//else
+		//{
+		//	SignInStatusMessageDelegate.Broadcast(TEXT("Failed to retrieve local player subsystem"), true);
+		//}
+		APlayerController* LocalPlayerController = GEngine->GetFirstLocalPlayerController(GetWorld());
+		if (IsValid(LocalPlayerController))
 		{
-			SignInStatusMessageDelegate.Broadcast(TEXT("Failed to retrieve local player subsystem"), true);
+			APortalHUD* PortalHUD = Cast<APortalHUD>(LocalPlayerController->GetHUD());
+			if (IsValid(PortalHUD))
+			{
+				PortalHUD->OnSignIn();
+			}
 		}
 	}
 }
