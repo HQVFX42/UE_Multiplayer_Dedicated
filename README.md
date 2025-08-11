@@ -1,6 +1,22 @@
 # UE_Multiplayer_Dedicated
 UE5 Dedicated Server with AWS and GameLift
+```cs
+// Copyright Epic Games, Inc. All Rights Reserved.
 
+using UnrealBuildTool;
+using System.Collections.Generic;
+
+public class FPSTemplateServerTarget : TargetRules
+{
+    public FPSTemplateServerTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Server;
+        DefaultBuildSettings = BuildSettingsVersion.V5;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+        ExtraModuleNames.Add("FPSTemplate");
+    }
+}
+```
 ---
 ## GameLift Fleets
 > https://docs.aws.amazon.com/gameliftservers/latest/developerguide/integration-engines-setup-unreal.html
