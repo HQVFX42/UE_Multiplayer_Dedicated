@@ -36,10 +36,10 @@ Lambda Triggers를 이용하여 이메일 중복을 방지할 수 있다
     
 2. Create Roles → set Actions(Cognito user pools) → set actions allowed(listusers) → add arns(get arn from user pool)
     
-    ![image.png](image.png)
+    ![image.png](./image.png)
     
 3. Add permission in that role(attach policies)
     
-    ![image.png](image%201.png)
+    ![image.png](./image1.png)
     
 4. You can test this by Invoking the cognito sign up function
